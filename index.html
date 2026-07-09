@@ -171,26 +171,42 @@
 
     .btn-secondary:active { background: var(--surface); }
 
-    /* --- Day selector --- */
-    .day-selector {
+    /* --- Week strip --- */
+    .week-strip {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 6px;
-      margin-top: 32px;
+      margin-bottom: 32px;
     }
 
     .day-btn {
+      position: relative;
       background: var(--surface);
       color: var(--muted);
       border: 1px solid transparent;
-      padding: 12px 0;
+      padding: 10px 0 12px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 500;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
       transition: all 0.15s;
+    }
+
+    .day-letter {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      opacity: 0.75;
+    }
+
+    .date-num {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
     }
 
     .day-btn.today {
@@ -204,7 +220,71 @@
     }
 
     .day-btn.empty {
-      opacity: 0.35;
+      opacity: 0.4;
+    }
+
+    .day-btn.done::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    /* --- Weight row --- */
+    .weight-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 16px 0;
+      margin-bottom: 8px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .weight-label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .weight-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      padding: 0;
+      outline: none;
+      text-align: right;
+      user-select: text;
+      -webkit-user-select: text;
+      -moz-appearance: textfield;
+      min-width: 0;
+    }
+
+    .weight-input::-webkit-outer-spin-button,
+    .weight-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .weight-input::placeholder {
+      color: var(--muted);
+      opacity: 0.4;
+    }
+
+    .weight-unit {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--muted);
     }
 
     /* --- Exercise screen --- */
@@ -489,9 +569,14 @@
     // ============================================
     // STATE
     // ============================================
+    function todayIso() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
     let state = {
       screen: 'home',      // 'home' | 'exo' | 'rest' | 'done'
-      day: new Date().getDay(),
+      date: todayIso(),
       exoIndex: 0,
       setIndex: 0,
       startTime: null,
@@ -545,9 +630,13 @@
       render();
     }
 
+    function dowOf(iso) {
+      return new Date(iso + 'T00:00:00').getDay();
+    }
+
     function startWorkout() {
       initAudio();
-      const day = routine[state.day];
+      const day = routine[dowOf(state.date)];
       if (!day || !day.exercises.length) return;
       state.exoIndex = 0;
       state.setIndex = 0;
@@ -558,12 +647,13 @@
 
     function completeSet() {
       initAudio();
-      const day = routine[state.day];
+      const day = routine[dowOf(state.date)];
       const exo = day.exercises[state.exoIndex];
       const isLastSet = state.setIndex >= exo.sets - 1;
       const isLastExo = state.exoIndex >= day.exercises.length - 1;
 
       if (isLastSet && isLastExo) {
+        saveCompletion(state.date);
         state.screen = 'done';
         render();
         return;
@@ -618,7 +708,7 @@
     }
 
     function advanceExercise() {
-      const day = routine[state.day];
+      const day = routine[dowOf(state.date)];
       const exo = day.exercises[state.exoIndex];
       const isLastSet = state.setIndex >= exo.sets - 1;
 
@@ -632,9 +722,61 @@
       render();
     }
 
-    function selectDay(day) {
-      state.day = day;
+    function selectDate(iso) {
+      state.date = iso;
       render();
+    }
+
+    // ============================================
+    // WEEK & STORAGE (completions + weights per date)
+    // ============================================
+    function getWeekDates(iso) {
+      const d = new Date(iso + 'T00:00:00');
+      const dow = d.getDay();
+      const diff = dow === 0 ? -6 : 1 - dow;
+      d.setDate(d.getDate() + diff);
+      const week = [];
+      for (let i = 0; i < 7; i++) {
+        const cur = new Date(d);
+        cur.setDate(d.getDate() + i);
+        week.push({
+          iso: `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, '0')}-${String(cur.getDate()).padStart(2, '0')}`,
+          dow: cur.getDay(),
+          num: cur.getDate(),
+        });
+      }
+      return week;
+    }
+
+    function loadCompletions() {
+      try { return JSON.parse(localStorage.getItem('completions') || '{}'); }
+      catch (e) { return {}; }
+    }
+
+    function saveCompletion(iso) {
+      const c = loadCompletions();
+      c[iso] = true;
+      localStorage.setItem('completions', JSON.stringify(c));
+    }
+
+    function isDoneOn(iso) {
+      return !!loadCompletions()[iso];
+    }
+
+    function loadWeights() {
+      try { return JSON.parse(localStorage.getItem('weights') || '{}'); }
+      catch (e) { return {}; }
+    }
+
+    function saveWeight(iso, val) {
+      const w = loadWeights();
+      const num = parseFloat(String(val).replace(',', '.'));
+      if (!isFinite(num) || num <= 0) {
+        delete w[iso];
+      } else {
+        w[iso] = num;
+      }
+      localStorage.setItem('weights', JSON.stringify(w));
     }
 
     function formatDuration(ms) {
@@ -659,49 +801,64 @@
     }
 
     function renderHome() {
-      const day = routine[state.day];
-      const today = new Date().getDay();
-      const dateStr = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-      const isToday = state.day === today;
-      const target = dayTargets[state.day] || '—';
+      const today = todayIso();
+      const dow = dowOf(state.date);
+      const day = routine[dow];
+      const isToday = state.date === today;
+      const target = dayTargets[dow] || '—';
+      const selected = new Date(state.date + 'T00:00:00');
+      const dateStr = selected.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+      const weight = loadWeights()[state.date] ?? '';
 
-      const daySelector = `
-        <div class="day-selector">
-          ${[1,2,3,4,5,6,0].map(d => `
-            <button class="day-btn ${d === today ? 'today' : ''} ${d === state.day ? 'active' : ''} ${!routine[d] ? 'empty' : ''}"
-                    onclick="selectDay(${d})">
-              ${dayShort[d]}
+      const weekStrip = `
+        <div class="week-strip">
+          ${getWeekDates(state.date).map(d => `
+            <button class="day-btn ${d.iso === today ? 'today' : ''} ${d.iso === state.date ? 'active' : ''} ${!routine[d.dow] ? 'empty' : ''} ${isDoneOn(d.iso) ? 'done' : ''}"
+                    onclick="selectDate('${d.iso}')">
+              <span class="day-letter">${dayShort[d.dow]}</span>
+              <span class="date-num">${d.num}</span>
             </button>
           `).join('')}
+        </div>
+      `;
+
+      const weightRow = `
+        <div class="weight-row">
+          <label class="weight-label" for="weight-in">Poids</label>
+          <input id="weight-in" class="weight-input" type="number" step="0.1" inputmode="decimal"
+                 value="${weight}" placeholder="—"
+                 onchange="saveWeight('${state.date}', this.value)">
+          <span class="weight-unit">kg</span>
+        </div>
+      `;
+
+      const header = `
+        <div class="home-header">
+          <div class="home-date">${isToday ? "Aujourd'hui" : dayNames[dow]} · ${dateStr}</div>
+          <div class="home-title">${day ? day.name : target}</div>
+          ${day ? `<div class="home-meta">${day.exercises.length} exercices · ~${Math.round((day.exercises.reduce((n,e)=>n+e.sets,0) * 75) / 60)} min</div>` : ''}
         </div>
       `;
 
       if (!day) {
         return `
           <div class="screen">
-            <div class="home-header">
-              <div class="home-date">${isToday ? "Aujourd'hui" : dayNames[state.day]} · ${dateStr}</div>
-              <div class="home-title">${target}</div>
-            </div>
+            ${weekStrip}
+            ${header}
+            ${weightRow}
             <div class="empty">
               <div class="empty-title">Pas encore configuré</div>
               <div class="empty-text">Les exercices pour ce jour n'ont pas encore été ajoutés.</div>
             </div>
-            ${daySelector}
           </div>
         `;
       }
 
-      const totalSets = day.exercises.reduce((n, e) => n + e.sets, 0);
-      const estimMinutes = Math.round((totalSets * 45 + totalSets * 30) / 60);
-
       return `
         <div class="screen">
-          <div class="home-header">
-            <div class="home-date">${isToday ? "Aujourd'hui" : dayNames[state.day]} · ${dateStr}</div>
-            <div class="home-title">${day.name}</div>
-            <div class="home-meta">${day.exercises.length} exercices · ~${estimMinutes} min</div>
-          </div>
+          ${weekStrip}
+          ${header}
+          ${weightRow}
 
           <div class="exercises-preview">
             ${day.exercises.map((e, i) => `
@@ -713,14 +870,13 @@
             `).join('')}
           </div>
 
-          <button class="btn-primary" onclick="startWorkout()">Commencer</button>
-          ${daySelector}
+          <button class="btn-primary" onclick="startWorkout()">${isDoneOn(state.date) ? 'Refaire' : 'Commencer'}</button>
         </div>
       `;
     }
 
     function renderExo() {
-      const day = routine[state.day];
+      const day = routine[dowOf(state.date)];
       const exo = day.exercises[state.exoIndex];
       const totalExos = day.exercises.length;
 
@@ -755,7 +911,7 @@
     }
 
     function renderRest() {
-      const day = routine[state.day];
+      const day = routine[dowOf(state.date)];
       const exo = day.exercises[state.exoIndex];
       const isLastSet = state.setIndex >= exo.sets - 1;
       const nextExo = isLastSet ? day.exercises[state.exoIndex + 1] : exo;
@@ -778,7 +934,7 @@
     }
 
     function renderDone() {
-      const day = routine[state.day];
+      const day = routine[dowOf(state.date)];
       const totalSets = day.exercises.reduce((n, e) => n + e.sets, 0);
       const duration = Date.now() - state.startTime;
 
