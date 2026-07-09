@@ -369,6 +369,15 @@
       letter-spacing: 0.08em;
     }
 
+    .exo-side {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      margin-top: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
     .exo-set {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -769,6 +778,9 @@
       restRemaining: 0,
       restTotal: 30,
       restTimer: null,
+      exoRemaining: 0,
+      exoHalfDone: false,
+      exoTimer: null,
       audioCtx: null,
     };
 
@@ -905,6 +917,48 @@
       updateRestUI();
     }
 
+    function clearExoTimer() {
+      if (state.exoTimer) {
+        clearInterval(state.exoTimer);
+        state.exoTimer = null;
+      }
+    }
+
+    function updateExoTimerUI() {
+      const valEl = document.querySelector('.exo-count-value');
+      const sideEl = document.querySelector('.exo-side');
+      if (valEl) valEl.textContent = state.exoRemaining;
+      if (sideEl) sideEl.textContent = `Côté ${state.exoHalfDone ? 2 : 1} / 2`;
+    }
+
+    function startExoTimer() {
+      clearExoTimer();
+      const day = routine[dowOf(state.date)];
+      const exo = day && day.exercises[state.exoIndex];
+      if (!exo || !exo.duration) return;
+      state.exoRemaining = exo.duration;
+      state.exoHalfDone = false;
+      updateExoTimerUI();
+      state.exoTimer = setInterval(() => {
+        state.exoRemaining--;
+        if (state.exoRemaining > 0) {
+          if (state.exoRemaining <= 3) beep(660, 120, 0.15);
+          updateExoTimerUI();
+          return;
+        }
+        if (exo.perSide && !state.exoHalfDone) {
+          state.exoHalfDone = true;
+          state.exoRemaining = exo.duration;
+          beepDouble();
+          updateExoTimerUI();
+          return;
+        }
+        clearExoTimer();
+        beepDouble();
+        completeSet();
+      }, 1000);
+    }
+
     function advanceExercise() {
       const day = routine[dowOf(state.date)];
       const exo = day.exercises[state.exoIndex];
@@ -996,6 +1050,11 @@
         done: renderDone,
       }[state.screen]();
       app.innerHTML = html;
+      if (state.screen === 'exo') {
+        startExoTimer();
+      } else {
+        clearExoTimer();
+      }
     }
 
     function renderHome() {
@@ -1078,10 +1137,14 @@
       const exo = day.exercises[state.exoIndex];
       const totalExos = day.exercises.length;
 
+      const isTimed = !!exo.duration;
       const countValue = exo.reps ?? exo.duration;
       const countLabel = exo.reps
         ? (exo.perSide ? 'reps chaque côté' : 'reps')
         : 'secondes';
+      const sideIndicator = (isTimed && exo.perSide)
+        ? `<div class="exo-side">Côté 1 / 2</div>`
+        : '';
 
       return `
         <div class="screen">
@@ -1100,6 +1163,7 @@
           <div class="exo-count">
             <div class="exo-count-value">${countValue}</div>
             <div class="exo-count-label">${countLabel}</div>
+            ${sideIndicator}
           </div>
 
           <div class="exo-set">Série ${state.setIndex + 1} / ${exo.sets}</div>
