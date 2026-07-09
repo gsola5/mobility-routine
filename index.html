@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mobilité">
+  <meta name="theme-color" content="#0E0D0B">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <title>Mobilité</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0E0D0B;
+      --surface: #1A1815;
+      --surface-2: #26221D;
+      --text: #F0EBE0;
+      --muted: #7A736A;
+      --accent: #E8A15C;
+      --accent-dim: #8A5F36;
+      --success: #7FB069;
+      --border: #2A2620;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* --- Layout --- */
+    .app {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px 32px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- Home screen --- */
+    .home-header {
+      margin-bottom: 40px;
+    }
+
+    .home-date {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .home-title {
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .home-meta {
+      font-size: 15px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    .exercises-preview {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin: 32px -20px 24px;
+    }
+
+    .preview-item {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-item:first-child { border-top: 1px solid var(--border); }
+
+    .preview-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      min-width: 24px;
+    }
+
+    .preview-name {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .preview-vol {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .btn-primary {
+      display: block;
+      width: 100%;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 20px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+
+    .btn-primary:active { opacity: 0.7; }
+
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 12px;
+    }
+
+    .btn-secondary:active { background: var(--surface); }
+
+    /* --- Day selector --- */
+    .day-selector {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 32px;
+    }
+
+    .day-btn {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid transparent;
+      padding: 12px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .day-btn.today {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .day-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .day-btn.empty {
+      opacity: 0.35;
+    }
+
+    /* --- Exercise screen --- */
+    .exo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .exo-progress {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .exo-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .exo-image {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--surface);
+      border-radius: 8px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    .exo-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .exo-name {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .exo-desc {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .exo-count {
+      text-align: center;
+      margin: auto 0 32px;
+    }
+
+    .exo-count-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 96px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+    }
+
+    .exo-count-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .exo-set {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* --- Rest screen --- */
+    .rest-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .rest-label {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .rest-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 160px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text);
+      letter-spacing: -0.05em;
+      margin-bottom: 32px;
+    }
+
+    .rest-progress {
+      width: 100%;
+      height: 2px;
+      background: var(--surface);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .rest-progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 100%;
+      transform-origin: left;
+      transition: transform 1s linear;
+    }
+
+    .rest-next {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .rest-next-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* --- Done screen --- */
+    .done-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .done-check {
+      font-size: 64px;
+      color: var(--success);
+      margin-bottom: 24px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .done-title {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .done-stats {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 48px;
+      line-height: 1.8;
+    }
+
+    /* --- Empty state --- */
+    .empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    .empty-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .empty-text {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- Screens injected here -->
+  </div>
+
+  <script>
+    // ============================================
+    // DATA
+    // ============================================
+    // Add days progressively. Structure:
+    // { name, exercises: [{ name, description, sets, reps OR duration, perSide, rest, image? }] }
+
+    const routine = {
+      1: { // Monday
+        name: "Hanche",
+        exercises: [
+          {
+            name: "Mobilité kettlebell",
+            description: "Assis au sol, jambes tendues. La jambe passe par-dessus le kettlebell.",
+            sets: 3,
+            reps: 10,
+            perSide: true,
+            rest: 30,
+            image: "images/hanche-01.jpg"
+          },
+          {
+            name: "Aller-retour jambe suspendue",
+            description: "Une jambe au sol, appuyée dessus. L'autre fait des aller-retours sans toucher le sol.",
+            sets: 2,
+            reps: 10,
+            perSide: true,
+            rest: 30,
+            image: "images/hanche-02.jpg"
+          },
+          {
+            name: "Hyperflexion hanche kettlebell",
+            description: "Dos sur une table. Une jambe tenue contre le ventre. L'autre soulevée avec le kettlebell sur la pointe de pied.",
+            sets: 2,
+            reps: 10,
+            perSide: true,
+            rest: 30,
+            image: "images/hanche-03.jpg"
+          },
+          {
+            name: "Levé de pied élastique",
+            description: "Main contre le mur, élastique au pied. Levé contrôlé.",
+            sets: 3,
+            reps: 15,
+            perSide: true,
+            rest: 30,
+            image: "images/hanche-04.jpg"
+          },
+          {
+            name: "DNS star",
+            description: "Position star, activation contrôlée de chaque côté.",
+            sets: 3,
+            reps: 10,
+            perSide: true,
+            rest: 30,
+            image: "images/hanche-05.jpg"
+          }
+        ]
+      }
+      // 2: Mardi (Ischios), 3: Mercredi (Quadris), etc. — à ajouter
+    };
+
+    const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+    const dayShort = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S'];
+    const dayTargets = {
+      1: 'Hanche', 2: 'Ischios', 3: 'Quadris', 4: 'Adducteurs',
+      5: 'Mollets', 6: 'Dos', 0: 'Genou'
+    };
+
+    // ============================================
+    // STATE
+    // ============================================
+    let state = {
+      screen: 'home',      // 'home' | 'exo' | 'rest' | 'done'
+      day: new Date().getDay(),
+      exoIndex: 0,
+      setIndex: 0,
+      startTime: null,
+      restRemaining: 0,
+      restTotal: 30,
+      restTimer: null,
+      audioCtx: null,
+    };
+
+    // ============================================
+    // AUDIO
+    // ============================================
+    function initAudio() {
+      if (!state.audioCtx) {
+        try {
+          state.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {}
+      }
+      // iOS needs resume after user gesture
+      if (state.audioCtx && state.audioCtx.state === 'suspended') {
+        state.audioCtx.resume();
+      }
+    }
+
+    function beep(freq = 880, duration = 180, volume = 0.25) {
+      if (!state.audioCtx) return;
+      const ctx = state.audioCtx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(volume, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration / 1000);
+      osc.start();
+      osc.stop(ctx.currentTime + duration / 1000);
+    }
+
+    function beepDouble() {
+      beep(880, 150);
+      setTimeout(() => beep(1174, 250), 180);
+    }
+
+    // ============================================
+    // NAVIGATION
+    // ============================================
+    function goHome() {
+      clearRest();
+      state.screen = 'home';
+      render();
+    }
+
+    function startWorkout() {
+      initAudio();
+      const day = routine[state.day];
+      if (!day || !day.exercises.length) return;
+      state.exoIndex = 0;
+      state.setIndex = 0;
+      state.startTime = Date.now();
+      state.screen = 'exo';
+      render();
+    }
+
+    function completeSet() {
+      initAudio();
+      const day = routine[state.day];
+      const exo = day.exercises[state.exoIndex];
+      const isLastSet = state.setIndex >= exo.sets - 1;
+      const isLastExo = state.exoIndex >= day.exercises.length - 1;
+
+      if (isLastSet && isLastExo) {
+        state.screen = 'done';
+        render();
+        return;
+      }
+
+      // Enter rest
+      startRest(exo.rest);
+    }
+
+    function startRest(seconds) {
+      state.restRemaining = seconds;
+      state.restTotal = seconds;
+      state.screen = 'rest';
+      render();
+
+      state.restTimer = setInterval(() => {
+        state.restRemaining--;
+        if (state.restRemaining <= 0) {
+          endRest();
+        } else if (state.restRemaining <= 3) {
+          beep(660, 120, 0.15);
+          updateRestUI();
+        } else {
+          updateRestUI();
+        }
+      }, 1000);
+    }
+
+    function updateRestUI() {
+      const valueEl = document.querySelector('.rest-value');
+      const barEl = document.querySelector('.rest-progress-bar');
+      if (valueEl) valueEl.textContent = state.restRemaining;
+      if (barEl) barEl.style.transform = `scaleX(${state.restRemaining / state.restTotal})`;
+    }
+
+    function clearRest() {
+      if (state.restTimer) {
+        clearInterval(state.restTimer);
+        state.restTimer = null;
+      }
+    }
+
+    function endRest() {
+      clearRest();
+      beepDouble();
+      advanceExercise();
+    }
+
+    function skipRest() {
+      clearRest();
+      advanceExercise();
+    }
+
+    function advanceExercise() {
+      const day = routine[state.day];
+      const exo = day.exercises[state.exoIndex];
+      const isLastSet = state.setIndex >= exo.sets - 1;
+
+      if (isLastSet) {
+        state.exoIndex++;
+        state.setIndex = 0;
+      } else {
+        state.setIndex++;
+      }
+      state.screen = 'exo';
+      render();
+    }
+
+    function selectDay(day) {
+      state.day = day;
+      render();
+    }
+
+    function formatDuration(ms) {
+      const totalSec = Math.floor(ms / 1000);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      return `${min} min ${String(sec).padStart(2, '0')}`;
+    }
+
+    // ============================================
+    // RENDER
+    // ============================================
+    function render() {
+      const app = document.getElementById('app');
+      const html = {
+        home: renderHome,
+        exo: renderExo,
+        rest: renderRest,
+        done: renderDone,
+      }[state.screen]();
+      app.innerHTML = html;
+    }
+
+    function renderHome() {
+      const day = routine[state.day];
+      const today = new Date().getDay();
+      const dateStr = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+      const isToday = state.day === today;
+      const target = dayTargets[state.day] || '—';
+
+      const daySelector = `
+        <div class="day-selector">
+          ${[1,2,3,4,5,6,0].map(d => `
+            <button class="day-btn ${d === today ? 'today' : ''} ${d === state.day ? 'active' : ''} ${!routine[d] ? 'empty' : ''}"
+                    onclick="selectDay(${d})">
+              ${dayShort[d]}
+            </button>
+          `).join('')}
+        </div>
+      `;
+
+      if (!day) {
+        return `
+          <div class="screen">
+            <div class="home-header">
+              <div class="home-date">${isToday ? "Aujourd'hui" : dayNames[state.day]} · ${dateStr}</div>
+              <div class="home-title">${target}</div>
+            </div>
+            <div class="empty">
+              <div class="empty-title">Pas encore configuré</div>
+              <div class="empty-text">Les exercices pour ce jour n'ont pas encore été ajoutés.</div>
+            </div>
+            ${daySelector}
+          </div>
+        `;
+      }
+
+      const totalSets = day.exercises.reduce((n, e) => n + e.sets, 0);
+      const estimMinutes = Math.round((totalSets * 45 + totalSets * 30) / 60);
+
+      return `
+        <div class="screen">
+          <div class="home-header">
+            <div class="home-date">${isToday ? "Aujourd'hui" : dayNames[state.day]} · ${dateStr}</div>
+            <div class="home-title">${day.name}</div>
+            <div class="home-meta">${day.exercises.length} exercices · ~${estimMinutes} min</div>
+          </div>
+
+          <div class="exercises-preview">
+            ${day.exercises.map((e, i) => `
+              <div class="preview-item">
+                <div class="preview-num">${String(i+1).padStart(2, '0')}</div>
+                <div class="preview-name">${e.name}</div>
+                <div class="preview-vol">${e.sets}×${e.reps ?? e.duration + 's'}${e.perSide ? '·2' : ''}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <button class="btn-primary" onclick="startWorkout()">Commencer</button>
+          ${daySelector}
+        </div>
+      `;
+    }
+
+    function renderExo() {
+      const day = routine[state.day];
+      const exo = day.exercises[state.exoIndex];
+      const totalExos = day.exercises.length;
+
+      const countValue = exo.reps ?? exo.duration;
+      const countLabel = exo.reps
+        ? (exo.perSide ? 'reps chaque côté' : 'reps')
+        : 'secondes';
+
+      return `
+        <div class="screen">
+          <div class="exo-header">
+            <div class="exo-progress">${String(state.exoIndex + 1).padStart(2, '0')} / ${String(totalExos).padStart(2, '0')}</div>
+            <button class="exo-close" onclick="goHome()">×</button>
+          </div>
+
+          <div class="exo-image">
+            ${exo.image ? `<img src="${exo.image}" alt="${exo.name}" onerror="this.style.display='none'; this.parentElement.textContent='Image manquante'">` : '<span>Image à venir</span>'}
+          </div>
+
+          <div class="exo-name">${exo.name}</div>
+          <div class="exo-desc">${exo.description}</div>
+
+          <div class="exo-count">
+            <div class="exo-count-value">${countValue}</div>
+            <div class="exo-count-label">${countLabel}</div>
+          </div>
+
+          <div class="exo-set">Série ${state.setIndex + 1} / ${exo.sets}</div>
+          <button class="btn-primary" onclick="completeSet()">Fait</button>
+        </div>
+      `;
+    }
+
+    function renderRest() {
+      const day = routine[state.day];
+      const exo = day.exercises[state.exoIndex];
+      const isLastSet = state.setIndex >= exo.sets - 1;
+      const nextExo = isLastSet ? day.exercises[state.exoIndex + 1] : exo;
+      const nextSet = isLastSet ? 1 : state.setIndex + 2;
+
+      return `
+        <div class="screen">
+          <div class="rest-container">
+            <div class="rest-label">Repos</div>
+            <div class="rest-value">${state.restRemaining}</div>
+            <div class="rest-progress">
+              <div class="rest-progress-bar" style="transform: scaleX(${state.restRemaining / state.restTotal});"></div>
+            </div>
+            <div class="rest-next">Prochain</div>
+            <div class="rest-next-name">${nextExo.name} · Série ${nextSet}</div>
+          </div>
+          <button class="btn-secondary" onclick="skipRest()">Passer</button>
+        </div>
+      `;
+    }
+
+    function renderDone() {
+      const day = routine[state.day];
+      const totalSets = day.exercises.reduce((n, e) => n + e.sets, 0);
+      const duration = Date.now() - state.startTime;
+
+      return `
+        <div class="screen">
+          <div class="done-container">
+            <div class="done-check">✓</div>
+            <div class="done-title">Terminé</div>
+            <div class="done-stats">
+              ${day.exercises.length} exercices<br>
+              ${totalSets} séries<br>
+              ${formatDuration(duration)}
+            </div>
+          </div>
+          <button class="btn-primary" onclick="goHome()">Retour</button>
+        </div>
+      `;
+    }
+
+    // ============================================
+    // INIT
+    // ============================================
+    // Prevent bounce scroll on iOS
+    document.addEventListener('touchmove', (e) => {
+      if (e.target.closest('.rest-container, .exo-count, .home-title, .done-container')) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Keep screen awake during workout (best-effort; not all iOS versions)
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (e) {}
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (wakeLock !== null && document.visibilityState === 'visible') {
+        requestWakeLock();
+      }
+    });
+    requestWakeLock();
+
+    // Service worker registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
