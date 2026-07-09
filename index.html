@@ -750,8 +750,31 @@
             image: "images/mollets-03.jpg"
           }
         ]
+      },
+      6: { // Saturday — Fentes & step down
+        name: "Fentes & step down",
+        exercises: [
+          {
+            name: "Extension max en fente",
+            description: "Fente profonde, hanche arrière poussée en extension maximale. Alterner de jambe toutes les 30 sec, enchaîner sans repos pendant 12 min.",
+            sets: 12,
+            duration: 30,
+            perSide: true,
+            rest: 0,
+            image: "images/samedi-01.jpg"
+          },
+          {
+            name: "Step down excentrique",
+            description: "Un pied posé sur une marche, l'autre descend sous le niveau de la marche (contact léger au sol), remontée contrôlée.",
+            sets: 4,
+            reps: 10,
+            perSide: false,
+            rest: 30,
+            image: "images/samedi-02.jpg"
+          }
+        ]
       }
-      // 6: Samedi (Dos), 0: Dimanche (Genou) — à ajouter
+      // 0: Dimanche (Genou) — à ajouter
     };
 
     const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
@@ -857,8 +880,11 @@
         return;
       }
 
-      // Enter rest
-      startRest(exo.rest);
+      if (exo.rest > 0) {
+        startRest(exo.rest);
+      } else {
+        advanceExercise();
+      }
     }
 
     function startRest(seconds) {
