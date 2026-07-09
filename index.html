@@ -434,6 +434,28 @@
       color: var(--text);
     }
 
+    .rest-adjust {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .rest-adjust button {
+      flex: 1;
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .rest-adjust button:active { background: var(--surface); }
+
     /* --- Done screen --- */
     .done-container {
       flex: 1;
@@ -646,7 +668,7 @@
             image: "images/quadris-04.jpg"
           },
           {
-            name: "Squat sauté (mains au sol)",
+            name: "Frog jump",
             description: "Descente en squat, mains au sol en bas. Saut explosif vers le haut, pieds qui se rejoignent en position haute.",
             sets: 3,
             reps: 15,
@@ -805,6 +827,18 @@
     function skipRest() {
       clearRest();
       advanceExercise();
+    }
+
+    function adjustRest(delta) {
+      if (state.screen !== 'rest') return;
+      const next = state.restRemaining + delta;
+      if (next <= 0) {
+        endRest();
+        return;
+      }
+      state.restRemaining = next;
+      if (delta > 0) state.restTotal += delta;
+      updateRestUI();
     }
 
     function advanceExercise() {
@@ -1027,6 +1061,10 @@
             </div>
             <div class="rest-next">Prochain</div>
             <div class="rest-next-name">${nextExo.name} · Série ${nextSet}</div>
+          </div>
+          <div class="rest-adjust">
+            <button onclick="adjustRest(-15)">−15s</button>
+            <button onclick="adjustRest(15)">+15s</button>
           </div>
           <button class="btn-secondary" onclick="skipRest()">Passer</button>
         </div>
