@@ -186,6 +186,187 @@
       color: var(--muted);
     }
 
+    .exo-count-value.is-transition {
+      color: var(--success);
+    }
+
+    /* --- Preview / édition avant démarrage --- */
+    .prev-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .prev-back, .prev-reset {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .prev-reset { color: var(--accent); }
+    .prev-back:active, .prev-reset:active { opacity: 0.6; }
+
+    .prev-title {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .prev-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .prev-hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .prev-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .prev-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .prev-row-head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .prev-row-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .prev-row-name {
+      font-size: 15px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .prev-controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .prev-ctrl {
+      background: var(--surface-2);
+      border-radius: 6px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .prev-ctrl-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .prev-ctrl-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .prev-ctrl-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      min-width: 42px;
+    }
+
+    .prev-step {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 6px;
+      cursor: pointer;
+      min-width: 28px;
+    }
+
+    .prev-step:active { background: var(--surface); }
+    .prev-ctrl-static .prev-ctrl-value { color: var(--muted); }
+
+    /* --- Pause --- */
+    .exo-header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pause-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .pause-btn.is-paused {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    .pause-btn:active { opacity: 0.7; }
+
+    /* Assombrit tout sauf le bouton reprendre quand en pause */
+    .screen.is-paused .exo-image,
+    .screen.is-paused .exo-name,
+    .screen.is-paused .exo-desc,
+    .screen.is-paused .exo-count,
+    .screen.is-paused .exo-side-big,
+    .screen.is-paused .exo-set,
+    .screen.is-paused .rest-value,
+    .screen.is-paused .rest-progress,
+    .screen.is-paused .rest-next,
+    .screen.is-paused .rest-next-name {
+      opacity: 0.35;
+      transition: opacity 0.15s;
+    }
+
+    .exo-side-big[data-side="switch"] {
+      background: var(--muted);
+      color: var(--bg);
+    }
+
     .home-date {
       font-size: 13px;
       font-weight: 500;
@@ -1235,46 +1416,59 @@
       A: {
         name: "Futsal A — Force",
         short: "A — Force",
-        estimatedMin: 43,
+        estimatedMin: 45,
         exercises: [
-          { name: "Échauffement", description: "Marche, montées de genoux, rotations de hanches.", sets: 1, duration: 180, perSide: false, rest: 0 },
-          { name: "Fente bulgare (kettlebell)", description: "KB dans la main opposée à la jambe avant. 3 s de descente contrôlée.", sets: 4, duration: 40, perSide: true, rest: 60, icon: "ex-fente-bulgare" },
-          { name: "Soulevé de terre unilatéral", description: "KB dans la main opposée à la jambe d'appui. Dos droit, hanche qui recule.", sets: 3, duration: 40, perSide: true, rest: 45, icon: "ex-souleve-de-terre-unilateral" },
-          { name: "Isométrie mollet, une jambe", description: "Sur la pointe d'un pied. Talon haut, on ne bouge plus.", sets: 4, duration: 30, perSide: true, rest: 30, icon: "ex-isometrie-mollet-une-jambe" },
+          { name: "Trot + rotations", description: "1 min de trot progressif sur place, rotations d'épaules puis de hanches. On monte doucement le rythme cardiaque.", sets: 1, duration: 60, perSide: false, rest: 0 },
+          { name: "Ouverture de hanche dynamique", description: "Grande fente avant, main opposée au sol, rotation du buste vers la jambe avant. Alterne G/D en marchant, 6-8 par jambe.", sets: 1, duration: 60, perSide: false, rest: 0 },
+          { name: "Squats profonds + activation fessiers", description: "10 squats profonds lents (3 s en bas), puis 15 ponts fessiers au sol. Fluide, on prépare la chaîne postérieure.", sets: 1, duration: 60, perSide: false, rest: 20 },
+          { name: "Fente bulgare (kettlebell)", description: "KB dans la main opposée à la jambe avant. 3 s de descente contrôlée, remontée par le talon avant.", sets: 4, duration: 40, perSide: true, rest: 60, icon: "ex-fente-bulgare" },
+          { name: "Soulevé de terre unilatéral", description: "KB dans la main opposée à la jambe d'appui. Dos droit, hanche qui recule, jambe libre alignée avec le tronc.", sets: 3, duration: 40, perSide: true, rest: 45, icon: "ex-souleve-de-terre-unilateral" },
+          { name: "Isométrie mollet, une jambe", description: "Sur la pointe d'un pied, main au mur pour l'équilibre. Talon haut, on ne bouge plus.", sets: 4, duration: 30, perSide: true, rest: 30, icon: "ex-isometrie-mollet-une-jambe" },
           { name: "Copenhagen plank", description: "Sur le côté, avant-bras au sol, cheville du dessus sur un banc, bassin décollé. Passe sur le genou si trop dur.", sets: 3, duration: 20, perSide: true, rest: 30, icon: "ex-copenhagen-plank" },
-          { name: "Leg curl au ballon", description: "Dos au sol, talons sur un ballon. Bassin haut, on tire le ballon vers les fesses.", sets: 3, duration: 40, perSide: false, rest: 60, icon: "ex-leg-curl-au-ballon" },
-          { name: "Suitcase carry", description: "KB dans une main, marche. Épaule qui ne descend pas du côté chargé.", sets: 3, duration: 30, perSide: true, rest: 30, icon: "ex-suitcase-carry" },
-          { name: "Pallof press", description: "Élastique ancré de côté à hauteur de sternum. Pousse devant, rien ne tourne dans le tronc.", sets: 3, duration: 30, perSide: true, rest: 30, icon: "ex-pallof-press" },
-          { name: "Étirements", description: "Étirements légers, respiration lente.", sets: 1, duration: 120, perSide: false, rest: 0, icon: "ex-etirements" }
+          { name: "Pont fessier unijambe (KB bras tendus)", description: "Dos au sol, un pied à plat, l'autre jambe tendue vers le plafond. Kettlebell à deux mains, bras verrouillés au-dessus de la poitrine. Monte le bassin par la fesse d'appui, sans creuser le bas du dos.", sets: 3, duration: 30, perSide: true, rest: 60, icon: "ex-leg-curl-au-ballon" },
+          { name: "Suitcase carry", description: "KB dans une main, marche. Épaule qui ne descend pas du côté chargé, tronc gainé.", sets: 3, duration: 30, perSide: true, rest: 30, icon: "ex-suitcase-carry" },
+          { name: "Dead-bug kettlebell", description: "Dos au sol, KB à deux mains bras verrouillés au-dessus de la poitrine. Étends le bras opposé et la jambe opposée sans creuser le bas du dos, retour, alterne.", sets: 3, duration: 40, perSide: false, rest: 45 },
+          { name: "Étirement quadriceps", description: "Debout, ramène le pied vers la fesse, genou pointé vers le sol. Bassin en rétroversion, contracte la fesse d'appui.", sets: 1, duration: 30, perSide: true, rest: 0 },
+          { name: "Étirement ischios", description: "Un pied posé sur une surface basse, jambe tendue. Penche le buste en gardant le dos droit, va chercher la pointe de pied.", sets: 1, duration: 30, perSide: true, rest: 0 },
+          { name: "Étirement adducteurs (grenouille)", description: "Assis au sol, plantes de pieds jointes, genoux vers le sol. Pousse doucement avec les coudes.", sets: 1, duration: 45, perSide: false, rest: 0 }
         ]
       },
       B1: {
         name: "Futsal B1 — Appuis",
         short: "B1 — Appuis",
-        estimatedMin: 27,
+        estimatedMin: 30,
         exercises: [
-          { name: "Échauffement", description: "Trot léger.", sets: 1, duration: 180, perSide: false, rest: 0 },
+          { name: "Trot + montées de genoux", description: "1 min de trot léger, montées de genoux progressives sur les 20 dernières secondes.", sets: 1, duration: 60, perSide: false, rest: 0 },
+          { name: "Talons-fesses + pas chassés", description: "30 s de talons-fesses actifs sur place, 30 s de pas chassés latéraux (alterne le sens).", sets: 1, duration: 60, perSide: false, rest: 0 },
+          { name: "Sauts contrôlés", description: "10 petits sauts verticaux, réception douce à mi-hauteur. Réveille tendon d'Achille et cheville.", sets: 1, duration: 60, perSide: false, rest: 20 },
           { name: "Genou au mur", description: "Debout face au mur, pied à quelques cm. Le genou vient toucher, le talon reste au sol.", sets: 2, duration: 30, perSide: true, rest: 0, icon: "ex-genou-au-mur" },
           { name: "Marche latérale élastique", description: "Élastique au-dessus des chevilles. Un aller, un retour, hanche stable.", sets: 2, duration: 20, perSide: true, rest: 0, icon: "ex-marche-laterale-elastique" },
           { name: "Réception amortie", description: "Petit saut vertical. Figer 2 s en bas, sans bruit.", sets: 3, duration: 20, perSide: false, rest: 60, icon: "ex-reception-amortie" },
           { name: "Pogos", description: "Jambes tendues, contact au sol le plus court possible.", sets: 4, duration: 15, perSide: false, rest: 45, icon: "ex-pogos" },
           { name: "Swing kettlebell (une main)", description: "KB projetée par les hanches, pas par les bras.", sets: 6, duration: 15, perSide: true, rest: 45, icon: "ex-swing-une-main" },
           { name: "Accélération 15 m à 80 %", description: "Départ, 15 m d'accélération. Appuie sur Fait en arrivant.", sets: 6, manual: true, perSide: false, rest: 90, icon: "ex-acceleration-sprint" },
-          { name: "Récupération", description: "Marche.", sets: 1, duration: 180, perSide: false, rest: 0 }
+          { name: "Étirement mollet au mur", description: "Mains au mur, une jambe en arrière, talon au sol. Pousse la hanche vers l'avant.", sets: 1, duration: 30, perSide: true, rest: 0 },
+          { name: "Étirement soléaire", description: "Comme le mollet mais genou fléchi, talon reste au sol. Descend en flexion douce.", sets: 1, duration: 30, perSide: true, rest: 0 },
+          { name: "Étirement fessiers (figure 4)", description: "Allongé sur le dos, une cheville sur le genou opposé, tire le genou d'appui vers la poitrine.", sets: 1, duration: 30, perSide: true, rest: 0 }
         ]
       },
       B2: {
         name: "Futsal B2 — Changements de direction",
         short: "B2 — Directions",
-        estimatedMin: 37,
+        estimatedMin: 40,
         exercises: [
-          { name: "Échauffement", description: "Trot + montées de genoux + talons-fesses.", sets: 1, duration: 240, perSide: false, rest: 0 },
+          { name: "Trot + montées de genoux", description: "1 min de trot, montées de genoux progressives.", sets: 1, duration: 60, perSide: false, rest: 0 },
+          { name: "Talons-fesses + carioca", description: "30 s de talons-fesses, 30 s de carioca latéral (croise devant puis derrière).", sets: 1, duration: 60, perSide: false, rest: 0 },
+          { name: "Accélérations à 50 %", description: "3 aller-retour de 10 m à mi-vitesse, cadence en montant. On prépare le neuromoteur avant les vrais sprints.", sets: 1, duration: 60, perSide: false, rest: 20 },
+          { name: "Ouverture de hanche dynamique", description: "Grande fente marchée avec rotation du buste vers la jambe avant, 6-8 par côté.", sets: 1, duration: 60, perSide: false, rest: 20 },
           { name: "Genou au mur", description: "Debout face au mur. Genou touche, talon reste au sol.", sets: 2, duration: 30, perSide: true, rest: 0, icon: "ex-genou-au-mur" },
           { name: "Marche latérale élastique", description: "Élastique au-dessus des chevilles. Un aller, un retour.", sets: 2, duration: 20, perSide: true, rest: 0, icon: "ex-marche-laterale-elastique" },
           { name: "Freinage 10 m", description: "10 m lancés, arrêt net, bassin en arrière. Fais côté 1, puis côté 2, puis repos.", sets: 8, manual: true, perSide: true, rest: 45, icon: "ex-freinage" },
           { name: "5-10-5", description: "Touche le sol à chaque cône, repars sur la jambe extérieure. Appuie sur Fait à la fin.", sets: 6, manual: true, perSide: false, rest: 90, icon: "ex-5-10-5" },
           { name: "Sprint 25 m", description: "À fond. Appuie sur Fait à l'arrivée.", sets: 4, manual: true, perSide: false, rest: 120, icon: "ex-acceleration-sprint" },
-          { name: "Récupération", description: "Marche.", sets: 1, duration: 180, perSide: false, rest: 0 }
+          { name: "Étirement mollet au mur", description: "Mains au mur, jambe en arrière, talon au sol. Pousse la hanche vers l'avant.", sets: 1, duration: 30, perSide: true, rest: 0 },
+          { name: "Étirement quadriceps", description: "Debout, pied vers la fesse, bassin en rétroversion.", sets: 1, duration: 30, perSide: true, rest: 0 },
+          { name: "Étirement psoas (fente au sol)", description: "Genou arrière au sol, jambe avant à 90°. Bascule le bassin, pousse la hanche vers l'avant.", sets: 1, duration: 30, perSide: true, rest: 0 }
         ]
       }
     };
@@ -1284,6 +1478,47 @@
       if (key === 'mobility') return routine[dowOf(state.date)] || null;
       if (key.startsWith('futsal-')) return futsal[key.slice(7)] || null;
       return null;
+    }
+
+    // Clé de stockage pour les overrides — mobility varie par jour de la semaine.
+    function overrideKey(key) {
+      if (key === 'mobility') return 'mobility-' + dowOf(state.date);
+      return key;
+    }
+
+    function loadAllOverrides() {
+      try { return JSON.parse(localStorage.getItem('overrides') || '{}'); }
+      catch (e) { return {}; }
+    }
+
+    function getOverrides(key) {
+      return loadAllOverrides()[overrideKey(key)] || {};
+    }
+
+    function saveOverride(key, exoIndex, field, value) {
+      const all = loadAllOverrides();
+      const ok = overrideKey(key);
+      if (!all[ok]) all[ok] = {};
+      if (!all[ok][exoIndex]) all[ok][exoIndex] = {};
+      all[ok][exoIndex][field] = value;
+      localStorage.setItem('overrides', JSON.stringify(all));
+    }
+
+    function clearOverrides(key) {
+      const all = loadAllOverrides();
+      delete all[overrideKey(key)];
+      localStorage.setItem('overrides', JSON.stringify(all));
+    }
+
+    // Fusionne les overrides sur la définition de la séance.
+    function getResolvedWorkout(key) {
+      const w = getWorkout(key);
+      if (!w) return null;
+      const overrides = getOverrides(key);
+      return {
+        ...w,
+        exercises: w.exercises.map((e, i) => ({ ...e, ...(overrides[i] || {}) }))
+      };
     }
 
     function workoutMin(w) {
@@ -1304,7 +1539,7 @@
     }
 
     let state = {
-      screen: 'home',      // 'home' | 'exo' | 'rest' | 'done'
+      screen: 'home',      // 'home' | 'preview' | 'exo' | 'rest' | 'done'
       date: todayIso(),
       workoutKey: null,    // 'mobility' | 'futsal-A' | 'futsal-B1' | 'futsal-B2'
       exoIndex: 0,
@@ -1317,6 +1552,8 @@
       exoHalfDone: false,
       manualHalfDone: false,
       exoTimer: null,
+      inTransition: false, // vraie pendant les 5s de changement de côté
+      paused: false,
       audioCtx: null,
     };
 
@@ -1355,6 +1592,12 @@
       setTimeout(() => beep(1174, 250), 180);
     }
 
+    // Son distinct pour signaler un changement de côté (grave puis médium)
+    function beepSideChange() {
+      beep(392, 220, 0.3);           // Sol4 grave
+      setTimeout(() => beep(523, 260, 0.3), 240); // Do5
+    }
+
     // ============================================
     // NAVIGATION
     // ============================================
@@ -1363,6 +1606,9 @@
       clearExoTimer();
       state.workoutKey = null;
       state.manualHalfDone = false;
+      state.paused = false;
+      state.inTransition = false;
+      state.exoHalfDone = false;
       state.screen = 'home';
       render();
     }
@@ -1371,14 +1617,25 @@
       return new Date(iso + 'T00:00:00').getDay();
     }
 
-    function startWorkout(key) {
-      initAudio();
+    // Ouvre l'écran de preview (édition sets/durées/repos avant de lancer)
+    function openPreview(key) {
       const w = getWorkout(key);
       if (!w || !w.exercises.length) return;
       state.workoutKey = key;
+      state.screen = 'preview';
+      render();
+    }
+
+    function startWorkout(key) {
+      initAudio();
+      const w = getResolvedWorkout(key || state.workoutKey);
+      if (!w || !w.exercises.length) return;
+      state.workoutKey = key || state.workoutKey;
       state.exoIndex = 0;
       state.setIndex = 0;
       state.manualHalfDone = false;
+      state.paused = false;
+      state.inTransition = false;
       state.startTime = Date.now();
       state.screen = 'exo';
       render();
@@ -1386,7 +1643,7 @@
 
     function completeSet() {
       initAudio();
-      const w = getWorkout(state.workoutKey);
+      const w = getResolvedWorkout(state.workoutKey);
       const exo = w.exercises[state.exoIndex];
 
       // Manuel perSide : un tap = un côté, deux taps = série finie.
@@ -1421,7 +1678,9 @@
       state.screen = 'rest';
       render();
 
+      state.paused = false;
       state.restTimer = setInterval(() => {
+        if (state.paused) return;
         state.restRemaining--;
         if (state.restRemaining <= 0) {
           endRest();
@@ -1480,27 +1739,54 @@
 
     function updateExoTimerUI() {
       const valEl = document.querySelector('.exo-count-value');
-      if (valEl) valEl.textContent = state.exoRemaining;
+      if (valEl) {
+        valEl.textContent = state.exoRemaining;
+        valEl.classList.toggle('is-transition', !!state.inTransition);
+      }
+
+      const labelEl = document.querySelector('.exo-count-label');
+      if (labelEl) labelEl.textContent = state.inTransition ? 'change de jambe' : 'secondes';
 
       const badgeEl = document.querySelector('.exo-side-big');
       if (badgeEl) {
         const right = state.exoHalfDone;
-        badgeEl.dataset.side = right ? 'right' : 'left';
-        badgeEl.querySelector('.exo-side-arrow').textContent = right ? '→' : '←';
-        badgeEl.querySelector('.exo-side-label').textContent = right ? 'DROITE' : 'GAUCHE';
+        badgeEl.dataset.side = state.inTransition ? 'switch' : (right ? 'right' : 'left');
+        badgeEl.querySelector('.exo-side-arrow').textContent = state.inTransition ? '⇄' : (right ? '→' : '←');
+        badgeEl.querySelector('.exo-side-label').textContent = state.inTransition ? 'CHANGE' : (right ? 'DROITE' : 'GAUCHE');
         badgeEl.querySelector('.exo-side-half').textContent = right ? '2/2' : '1/2';
       }
     }
 
+    const SIDE_TRANSITION_S = 5;
+
     function startExoTimer() {
       clearExoTimer();
-      const w = getWorkout(state.workoutKey);
+      const w = getResolvedWorkout(state.workoutKey);
       const exo = w && w.exercises[state.exoIndex];
       if (!exo || !exo.duration) return;
       state.exoRemaining = exo.duration;
       state.exoHalfDone = false;
+      state.inTransition = false;
+      state.paused = false;
       updateExoTimerUI();
       state.exoTimer = setInterval(() => {
+        if (state.paused) return;
+
+        // Phase de transition entre les deux côtés
+        if (state.inTransition) {
+          state.exoRemaining--;
+          if (state.exoRemaining > 0) {
+            if (state.exoRemaining <= 2) beep(660, 120, 0.15);
+            updateExoTimerUI();
+          } else {
+            state.inTransition = false;
+            state.exoRemaining = exo.duration;
+            beepDouble();
+            updateExoTimerUI();
+          }
+          return;
+        }
+
         state.exoRemaining--;
         if (state.exoRemaining > 0) {
           if (state.exoRemaining <= 3) beep(660, 120, 0.15);
@@ -1509,8 +1795,9 @@
         }
         if (exo.perSide && !state.exoHalfDone) {
           state.exoHalfDone = true;
-          state.exoRemaining = exo.duration;
-          beepDouble();
+          state.inTransition = true;
+          state.exoRemaining = SIDE_TRANSITION_S;
+          beepSideChange();
           updateExoTimerUI();
           return;
         }
@@ -1520,8 +1807,23 @@
       }, 1000);
     }
 
+    function togglePause() {
+      state.paused = !state.paused;
+      updatePauseUI();
+    }
+
+    function updatePauseUI() {
+      const btns = document.querySelectorAll('.pause-btn');
+      btns.forEach(b => {
+        b.textContent = state.paused ? '▶ Reprendre' : 'II Pause';
+        b.classList.toggle('is-paused', state.paused);
+      });
+      const scr = document.querySelector('.screen');
+      if (scr) scr.classList.toggle('is-paused', state.paused);
+    }
+
     function advanceExercise() {
-      const w = getWorkout(state.workoutKey);
+      const w = getResolvedWorkout(state.workoutKey);
       const exo = w.exercises[state.exoIndex];
       const isLastSet = state.setIndex >= exo.sets - 1;
 
@@ -1624,6 +1926,7 @@
       const app = document.getElementById('app');
       const html = {
         home: renderHome,
+        preview: renderPreview,
         exo: renderExo,
         rest: renderRest,
         done: renderDone,
@@ -1675,7 +1978,7 @@
 
       const mobilityCard = day ? `
         <button class="session-card session-card-primary ${isWorkoutDoneOn(state.date, 'mobility') ? 'done' : ''}"
-                onclick="startWorkout('mobility')">
+                onclick="openPreview('mobility')">
           <div class="session-card-head">
             <div class="session-eyebrow">Mobilité · ${dayNames[dow]}</div>
             <div class="session-title">${day.name}</div>
@@ -1698,7 +2001,7 @@
         const key = 'futsal-' + id;
         const done = isWorkoutDoneOn(state.date, key);
         return `
-          <button class="session-card ${done ? 'done' : ''}" onclick="startWorkout('${key}')">
+          <button class="session-card ${done ? 'done' : ''}" onclick="openPreview('${key}')">
             <div class="session-card-head">
               <div class="session-eyebrow">Futsal</div>
               <div class="session-title">${w.short}</div>
@@ -1724,8 +2027,101 @@
       `;
     }
 
+    // --- Preview screen (édition avant démarrage) ---
+    function bumpOverride(key, exoIndex, field, delta, min, max) {
+      const src = getWorkout(key);
+      const currentResolved = getResolvedWorkout(key).exercises[exoIndex];
+      const cur = currentResolved[field];
+      let next = cur + delta;
+      if (typeof min === 'number' && next < min) next = min;
+      if (typeof max === 'number' && next > max) next = max;
+      if (next === cur) return;
+      // Si on revient au défaut, on peut retirer l'override, mais on garde tel quel pour rester simple.
+      saveOverride(key, exoIndex, field, next);
+      render();
+    }
+
+    function resetOverrides(key) {
+      clearOverrides(key);
+      render();
+    }
+
+    function renderPreview() {
+      const key = state.workoutKey;
+      const w = getResolvedWorkout(key);
+      if (!w) { state.screen = 'home'; return renderHome(); }
+      const totalSec = w.exercises.reduce((n, e) => {
+        const work = e.duration ? e.duration * (e.perSide ? 2 : 1) : 0;
+        return n + e.sets * (work + e.rest);
+      }, 0);
+      const totalMin = Math.max(1, Math.round(totalSec / 60));
+
+      const rows = w.exercises.map((e, i) => {
+        const isTimed = !!e.duration;
+        const isManual = !!e.manual;
+        const workLabel = isManual ? 'Manuel' : (isTimed ? `${e.duration}s${e.perSide ? ' × 2' : ''}` : `${e.reps} reps${e.perSide ? ' × 2' : ''}`);
+        return `
+          <div class="prev-row">
+            <div class="prev-row-head">
+              <div class="prev-row-num">${String(i + 1).padStart(2, '0')}</div>
+              <div class="prev-row-name">${e.name}</div>
+            </div>
+            <div class="prev-controls">
+              <div class="prev-ctrl">
+                <div class="prev-ctrl-label">Séries</div>
+                <div class="prev-ctrl-body">
+                  <button class="prev-step" onclick="bumpOverride('${key}', ${i}, 'sets', -1, 1, 20)">−</button>
+                  <div class="prev-ctrl-value">${e.sets}</div>
+                  <button class="prev-step" onclick="bumpOverride('${key}', ${i}, 'sets', 1, 1, 20)">+</button>
+                </div>
+              </div>
+              ${isTimed ? `
+                <div class="prev-ctrl">
+                  <div class="prev-ctrl-label">Durée</div>
+                  <div class="prev-ctrl-body">
+                    <button class="prev-step" onclick="bumpOverride('${key}', ${i}, 'duration', -5, 5, 600)">−5</button>
+                    <div class="prev-ctrl-value">${e.duration}s</div>
+                    <button class="prev-step" onclick="bumpOverride('${key}', ${i}, 'duration', 5, 5, 600)">+5</button>
+                  </div>
+                </div>
+              ` : `
+                <div class="prev-ctrl prev-ctrl-static">
+                  <div class="prev-ctrl-label">Travail</div>
+                  <div class="prev-ctrl-body"><div class="prev-ctrl-value">${workLabel}</div></div>
+                </div>
+              `}
+              <div class="prev-ctrl">
+                <div class="prev-ctrl-label">Repos</div>
+                <div class="prev-ctrl-body">
+                  <button class="prev-step" onclick="bumpOverride('${key}', ${i}, 'rest', -15, 0, 600)">−15</button>
+                  <div class="prev-ctrl-value">${e.rest}s</div>
+                  <button class="prev-step" onclick="bumpOverride('${key}', ${i}, 'rest', 15, 0, 600)">+15</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const hasOverrides = Object.keys(getOverrides(key)).length > 0;
+
+      return `
+        <div class="screen">
+          <div class="prev-header">
+            <button class="prev-back" onclick="goHome()">← Retour</button>
+            ${hasOverrides ? `<button class="prev-reset" onclick="resetOverrides('${key}')">Réinitialiser</button>` : ''}
+          </div>
+          <div class="prev-title">${w.name}</div>
+          <div class="prev-meta">${w.exercises.length} exercices · ~${totalMin} min</div>
+          <div class="prev-hint">Ajuste séries, durée et repos avant de lancer. Les modifs sont mémorisées.</div>
+          <div class="prev-list">${rows}</div>
+          <button class="btn-primary" onclick="startWorkout()">Commencer</button>
+        </div>
+      `;
+    }
+
     function renderExo() {
-      const w = getWorkout(state.workoutKey);
+      const w = getResolvedWorkout(state.workoutKey);
       const exo = w.exercises[state.exoIndex];
       const totalExos = w.exercises.length;
 
@@ -1771,11 +2167,19 @@
             ? `<img src="${exo.image}" alt="${exo.name}" onerror="this.style.display='none'; this.parentElement.textContent='Image manquante'">`
             : '<span>Image à venir</span>');
 
+      const showPause = !!exo.duration; // pause utile seulement sur exos chronométrés
+      const pauseBtn = showPause
+        ? `<button class="pause-btn ${state.paused ? 'is-paused' : ''}" onclick="togglePause()">${state.paused ? '▶ Reprendre' : 'II Pause'}</button>`
+        : '';
+
       return `
-        <div class="screen">
+        <div class="screen ${state.paused ? 'is-paused' : ''}">
           <div class="exo-header">
             <div class="exo-progress">${String(state.exoIndex + 1).padStart(2, '0')} / ${String(totalExos).padStart(2, '0')} · ${w.short || w.name}</div>
-            <button class="exo-close" onclick="goHome()">×</button>
+            <div class="exo-header-actions">
+              ${pauseBtn}
+              <button class="exo-close" onclick="goHome()">×</button>
+            </div>
           </div>
 
           <div class="exo-image">${illustration}</div>
@@ -1801,14 +2205,14 @@
     }
 
     function renderRest() {
-      const w = getWorkout(state.workoutKey);
+      const w = getResolvedWorkout(state.workoutKey);
       const exo = w.exercises[state.exoIndex];
       const isLastSet = state.setIndex >= exo.sets - 1;
       const nextExo = isLastSet ? w.exercises[state.exoIndex + 1] : exo;
       const nextSet = isLastSet ? 1 : state.setIndex + 2;
 
       return `
-        <div class="screen">
+        <div class="screen ${state.paused ? 'is-paused' : ''}">
           <div class="rest-container">
             <div class="rest-label">Repos</div>
             <div class="rest-value">${state.restRemaining}</div>
@@ -1816,10 +2220,11 @@
               <div class="rest-progress-bar" style="transform: scaleX(${state.restRemaining / state.restTotal});"></div>
             </div>
             <div class="rest-next">Prochain</div>
-            <div class="rest-next-name">${nextExo.name} · Série ${nextSet}</div>
+            <div class="rest-next-name">${nextExo ? nextExo.name : '—'} · Série ${nextSet}</div>
           </div>
           <div class="rest-adjust">
             <button onclick="adjustRest(-15)">−15s</button>
+            <button class="pause-btn ${state.paused ? 'is-paused' : ''}" onclick="togglePause()">${state.paused ? '▶ Reprendre' : 'II Pause'}</button>
             <button onclick="adjustRest(15)">+15s</button>
           </div>
           <button class="btn-secondary" onclick="skipRest()">Passer</button>
@@ -1828,7 +2233,7 @@
     }
 
     function renderDone() {
-      const w = getWorkout(state.workoutKey);
+      const w = getResolvedWorkout(state.workoutKey);
       const totalSets = w.exercises.reduce((n, e) => n + e.sets, 0);
       const duration = Date.now() - state.startTime;
 
