@@ -75,6 +75,117 @@
       margin-bottom: 40px;
     }
 
+    .home-header-compact {
+      margin-bottom: 20px;
+    }
+
+    /* --- Session cards --- */
+    .sessions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .session-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 18px 18px 20px;
+      text-align: left;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .session-card:active { background: var(--surface-2); }
+
+    .session-card-primary {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      padding: 22px 22px 22px 24px;
+    }
+
+    .session-card-primary:active {
+      background: var(--accent-dim);
+      border-color: var(--accent-dim);
+    }
+
+    .session-card-empty {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .session-card.done {
+      border-color: var(--success);
+    }
+
+    .session-card-primary.done {
+      border-color: var(--bg);
+    }
+
+    .session-card-head {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .session-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+    .session-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+
+    .session-card-primary .session-title {
+      font-size: 26px;
+    }
+
+    .session-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .session-cta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .sessions-divider {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin: 8px 0 4px;
+    }
+
+    .exo-count-manual {
+      font-size: 64px;
+      color: var(--muted);
+    }
+
     .home-date {
       font-size: 13px;
       font-weight: 500;
@@ -332,6 +443,12 @@
       object-fit: cover;
     }
 
+    .exo-image .exo-svg {
+      width: 72%;
+      height: 72%;
+      display: block;
+    }
+
     .exo-name {
       font-size: 32px;
       font-weight: 700;
@@ -369,21 +486,93 @@
       letter-spacing: 0.08em;
     }
 
-    .exo-side {
+    /* Grand badge côté (perSide) : impossible à louper d'un coup d'œil */
+    .exo-side-big {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      background: var(--accent);
+      color: var(--bg);
+      border-radius: 8px;
+      padding: 14px 20px;
+      margin: 0 0 20px;
+      transition: background 0.2s;
+    }
+
+    .exo-side-big[data-side="right"] {
+      background: var(--success);
+    }
+
+    .exo-side-arrow {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: var(--accent);
-      margin-top: 12px;
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .exo-side-label {
+      font-size: 30px;
+      font-weight: 800;
       letter-spacing: 0.08em;
-      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .exo-side-half {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      opacity: 0.7;
     }
 
     .exo-set {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .exo-set-dots {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 100%;
+    }
+
+    .exo-set-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    .exo-set-dot.done {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .exo-set-dot.current {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(232, 161, 92, 0.25);
+    }
+
+    .exo-set-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .exo-set-label .exo-set-current {
+      color: var(--accent);
+      font-size: 26px;
     }
 
     /* --- Rest screen --- */
@@ -525,6 +714,238 @@
   </style>
 </head>
 <body>
+  <!-- Sprite SVG des exercices (inline, réutilisé via <use href="#ex-…"/>) -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <style>
+      .fx-body   { fill:none; stroke:var(--fx-ink,#F0EBE0); stroke-width:3.2; stroke-linecap:round; stroke-linejoin:round; }
+      .fx-head   { fill:var(--fx-ink,#F0EBE0); }
+      .fx-ground { fill:none; stroke:var(--fx-line,#7A736A); stroke-width:2; }
+      .fx-prop   { fill:none; stroke:var(--fx-line,#7A736A); stroke-width:2.6; stroke-linecap:round; }
+      .fx-arrow  { fill:none; stroke:var(--fx-accent,#E8A15C); stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
+      .fx-band   { fill:none; stroke:var(--fx-accent,#E8A15C); stroke-width:2.4; stroke-linecap:round; }
+      .fx-kb     { fill:var(--fx-ink,#F0EBE0); stroke:none; }
+      .fx-plumb  { fill:none; stroke:var(--fx-line,#7A736A); stroke-width:1.6; stroke-dasharray:3 3; }
+      .fx-ghost  { opacity:.26; }
+      .fx-dash   { stroke-dasharray:5 4; }
+      .fx-label  { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; fill:var(--fx-accent,#E8A15C); }
+    </style>
+    <defs>
+      <symbol id="ex-fente-bulgare" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-prop" d="M66 62 H96 M70 62 V90 M92 62 V90"/>
+        <path class="fx-body" d="M38 90 V74 L48 58 M48 58 L58 74 L68 63"/>
+        <path class="fx-body" d="M48 58 L46 35"/>
+        <path class="fx-body" d="M46 39 L53 51"/>
+        <circle class="fx-head" cx="46" cy="28" r="6"/>
+        <path class="fx-arrow" d="M22 48 V70 M18 65 L22 71 L26 65"/>
+        <text class="fx-label" x="8" y="42">3 s</text>
+      </symbol>
+      <symbol id="ex-souleve-de-terre-unilateral" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-body" d="M52 50 V70 L52 90"/>
+        <path class="fx-body" d="M52 50 L28 45"/>
+        <path class="fx-body" d="M30 46 L27 66"/>
+        <path class="fx-body" d="M52 50 L82 41"/>
+        <circle class="fx-head" cx="21" cy="43" r="6"/>
+        <path class="fx-arrow" d="M64 32 Q76 40 74 54 M68 50 L74 56 L78 48"/>
+      </symbol>
+      <symbol id="ex-isometrie-mollet-une-jambe" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-prop" d="M16 20 V90"/>
+        <path class="fx-body" d="M50 48 V70 L52 82 L61 90"/>
+        <path class="fx-body" d="M52 82 L45 85"/>
+        <path class="fx-body" d="M50 48 L40 62 L46 74"/>
+        <path class="fx-body" d="M50 48 V28"/>
+        <path class="fx-body" d="M50 33 L21 38"/>
+        <circle class="fx-head" cx="50" cy="21" r="6"/>
+        <path class="fx-arrow" d="M72 86 V66 M68 71 L72 65 L76 71"/>
+        <text class="fx-label" x="64" y="56">30 s</text>
+      </symbol>
+      <symbol id="ex-copenhagen-plank" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-prop" d="M60 56 H96 M88 56 V90"/>
+        <path class="fx-body" d="M12 90 H30 L31 73"/>
+        <path class="fx-body" d="M31 73 L60 66 L84 58"/>
+        <path class="fx-body" d="M60 66 L84 71"/>
+        <circle class="fx-head" cx="24" cy="68" r="6"/>
+        <path class="fx-arrow" d="M58 86 V73 M54 78 L58 72 L62 78"/>
+      </symbol>
+      <symbol id="ex-nordic-hamstring" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-prop" d="M64 82 H94 M88 82 V90"/>
+        <path class="fx-body" d="M78 87 H64 L64 90"/>
+        <path class="fx-body" d="M64 90 L38 51"/>
+        <path class="fx-body" d="M46 63 L38 76"/>
+        <circle class="fx-head" cx="34" cy="45" r="6"/>
+        <path class="fx-arrow" d="M26 36 Q16 48 20 62 M15 57 L20 63 L26 59"/>
+      </symbol>
+      <symbol id="ex-suitcase-carry" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-plumb" d="M48 24 V90"/>
+        <path class="fx-body" d="M44 90 V70 L48 62 L52 70 V90"/>
+        <path class="fx-body" d="M48 62 V42"/>
+        <path class="fx-body" d="M48 46 L39 62"/>
+        <path class="fx-body" d="M48 46 L60 63"/>
+        <circle class="fx-head" cx="48" cy="35" r="6"/>
+        <circle class="fx-kb" cx="62" cy="72" r="5.5"/>
+        <path class="fx-body" d="M60 63 L62 67"/>
+        <path class="fx-arrow" d="M64 36 H82 M76 32 L83 36 L76 40"/>
+      </symbol>
+      <symbol id="ex-pallof-press" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-prop" d="M90 22 V90"/>
+        <path class="fx-body" d="M34 90 V70 L40 62 L46 70 V90"/>
+        <path class="fx-body" d="M40 62 V44"/>
+        <circle class="fx-head" cx="40" cy="37" r="6"/>
+        <path class="fx-body" d="M40 48 L52 51 L62 53"/>
+        <path class="fx-band" d="M62 53 Q76 50 89 52"/>
+        <path class="fx-arrow" d="M62 70 H84 M78 66 L85 70 L78 74"/>
+      </symbol>
+      <symbol id="ex-leg-curl-au-ballon" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-body" d="M20 88 L44 73 L62 71 L72 79"/>
+        <path class="fx-body" d="M22 88 L34 91"/>
+        <circle class="fx-head" cx="13" cy="85" r="6"/>
+        <circle class="fx-prop" cx="79" cy="83" r="7.5"/>
+        <path class="fx-arrow" d="M62 58 H94 M67 54 L61 58 L67 62 M89 54 L95 58 L89 62"/>
+      </symbol>
+      <symbol id="ex-genou-au-mur" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-prop" d="M16 16 V90"/>
+        <path class="fx-body" d="M24 90 H44 L26 66 L46 52"/>
+        <path class="fx-body" d="M46 52 L44 31"/>
+        <path class="fx-body" d="M46 52 L60 72 L62 90"/>
+        <circle class="fx-head" cx="44" cy="24" r="6"/>
+        <path class="fx-arrow" d="M42 62 H25 M30 58 L24 62 L30 66"/>
+      </symbol>
+      <symbol id="ex-marche-laterale-elastique" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-body" d="M30 90 L34 78 L42 64"/>
+        <path class="fx-body" d="M70 90 L66 78 L58 64"/>
+        <path class="fx-body" d="M42 64 H58"/>
+        <path class="fx-body" d="M50 64 V44"/>
+        <path class="fx-body" d="M50 48 L40 59 M50 48 L60 59"/>
+        <circle class="fx-head" cx="50" cy="37" r="6"/>
+        <path class="fx-band" d="M33 78 Q50 84 67 78"/>
+        <path class="fx-arrow" d="M74 92 H92 M86 88 L93 92 L86 96"/>
+      </symbol>
+      <symbol id="ex-swing-une-main" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-body" d="M40 90 H54"/>
+        <path class="fx-body" d="M47 88 L49 72 L34 61"/>
+        <path class="fx-body" d="M34 61 L57 47"/>
+        <path class="fx-body" d="M55 48 L56 68"/>
+        <circle class="fx-head" cx="63" cy="42" r="6"/>
+        <circle class="fx-kb" cx="57" cy="75" r="5.5"/>
+        <path class="fx-body" d="M56 68 L57 71"/>
+        <path class="fx-arrow fx-dash" d="M66 76 Q82 72 86 50"/>
+        <path class="fx-arrow" d="M82 56 L86 48 L90 56"/>
+      </symbol>
+      <symbol id="ex-saut-leste" viewBox="0 0 100 100">
+        <path class="fx-ground" d="M6 90 H34 M66 90 H96"/>
+        <path class="fx-body" d="M44 80 V64 L50 58 L56 64 V80"/>
+        <path class="fx-body" d="M50 58 V42"/>
+        <path class="fx-body" d="M50 45 L43 52 M50 45 L57 52"/>
+        <circle class="fx-head" cx="50" cy="35" r="6"/>
+        <circle class="fx-kb" cx="50" cy="56" r="5.5"/>
+        <path class="fx-arrow" d="M78 82 V52 M74 57 L78 51 L82 57"/>
+      </symbol>
+      <symbol id="ex-reception-amortie" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-prop" d="M70 56 H96 M74 56 V90"/>
+        <path class="fx-body" d="M34 90 V74 L43 60 L52 74 V90"/>
+        <path class="fx-body" d="M43 60 L41 40"/>
+        <path class="fx-body" d="M41 44 L31 55 M41 44 L53 55"/>
+        <circle class="fx-head" cx="41" cy="33" r="6"/>
+        <path class="fx-arrow" d="M68 50 Q56 56 50 68 M45 62 L49 69 L57 67"/>
+        <path class="fx-arrow" d="M28 94 H40 M46 94 H58"/>
+      </symbol>
+      <symbol id="ex-pogos" viewBox="0 0 100 100">
+        <path class="fx-ground" d="M6 90 H34 M62 90 H96"/>
+        <path class="fx-body" d="M44 82 V60 M56 82 V60"/>
+        <path class="fx-body" d="M50 60 V38"/>
+        <path class="fx-body" d="M50 42 L43 60 M50 42 L57 60"/>
+        <circle class="fx-head" cx="50" cy="31" r="6"/>
+        <path class="fx-arrow" d="M76 50 V82 M72 55 L76 49 L80 55 M72 77 L76 83 L80 77"/>
+        <text class="fx-label" x="6" y="24">&lt;0,2 s</text>
+      </symbol>
+      <symbol id="ex-acceleration-sprint" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="88" x2="96" y2="88"/>
+        <path class="fx-body" d="M24 84 L36 66 L48 52"/>
+        <path class="fx-body" d="M48 52 L56 66 L64 76"/>
+        <path class="fx-body" d="M48 52 L66 36"/>
+        <path class="fx-body" d="M66 36 L75 45 L70 53"/>
+        <path class="fx-body" d="M66 36 L53 41 L47 33"/>
+        <circle class="fx-head" cx="72" cy="27" r="6"/>
+        <path class="fx-arrow" d="M14 96 H92 M86 92 L93 96 L86 100"/>
+      </symbol>
+      <symbol id="ex-acceleration-freinee" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="88" x2="96" y2="88"/>
+        <path class="fx-prop" d="M12 34 V88"/>
+        <path class="fx-body" d="M30 84 L40 68 L52 54"/>
+        <path class="fx-body" d="M52 54 L59 67 L66 76"/>
+        <path class="fx-body" d="M52 54 L68 39"/>
+        <path class="fx-body" d="M68 39 L77 47 L72 55"/>
+        <path class="fx-body" d="M68 39 L56 43 L50 35"/>
+        <circle class="fx-head" cx="74" cy="30" r="6"/>
+        <path class="fx-band" d="M13 52 Q32 62 52 56"/>
+        <path class="fx-arrow" d="M58 96 H94 M88 92 L95 96 L88 100"/>
+      </symbol>
+      <symbol id="ex-rebond-contact-court" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-body" d="M40 90 V76 L48 62 L56 76 V90"/>
+        <path class="fx-body" d="M48 62 L46 42"/>
+        <path class="fx-body" d="M46 46 L36 57 M46 46 L58 57"/>
+        <circle class="fx-head" cx="46" cy="35" r="6"/>
+        <path class="fx-arrow" d="M20 44 L32 74 M25 71 L33 76 L33 68"/>
+        <path class="fx-arrow" d="M64 74 L76 44 M70 47 L77 42 L79 51"/>
+      </symbol>
+      <symbol id="ex-bondissements-alternes" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <g class="fx-ghost">
+          <path class="fx-body" d="M18 90 V74 L24 62"/>
+          <path class="fx-body" d="M24 62 V44"/>
+          <circle class="fx-head" cx="24" cy="37" r="6"/>
+        </g>
+        <path class="fx-body" d="M66 88 L70 72 L66 58"/>
+        <path class="fx-body" d="M66 58 L54 70"/>
+        <path class="fx-body" d="M66 58 L68 40"/>
+        <path class="fx-body" d="M67 44 L78 52"/>
+        <circle class="fx-head" cx="69" cy="33" r="6"/>
+        <path class="fx-arrow fx-dash" d="M30 70 Q46 44 62 66"/>
+        <path class="fx-arrow" d="M57 60 L62 67 L66 60"/>
+      </symbol>
+      <symbol id="ex-freinage" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="88" x2="96" y2="88"/>
+        <path class="fx-body" d="M50 58 L62 70 L74 86"/>
+        <path class="fx-body" d="M50 58 L58 72 L66 86"/>
+        <path class="fx-body" d="M50 58 L38 38"/>
+        <path class="fx-body" d="M38 38 L26 47 M38 38 L31 27"/>
+        <circle class="fx-head" cx="34" cy="27" r="6"/>
+        <path class="fx-arrow" d="M84 46 H62 M68 42 L61 46 L68 50"/>
+        <path class="fx-arrow" d="M62 92 H74 M76 92 H86"/>
+      </symbol>
+      <symbol id="ex-5-10-5" viewBox="0 0 100 100">
+        <path class="fx-prop" d="M14 78 L18 66 L22 78 Z M46 78 L50 66 L54 78 Z M78 78 L82 66 L86 78 Z"/>
+        <path class="fx-arrow" d="M50 56 H80 M74 52 L81 56 L74 60"/>
+        <path class="fx-arrow" d="M80 42 H20 M26 38 L19 42 L26 46"/>
+        <path class="fx-arrow" d="M20 28 H50 M44 24 L51 28 L44 32"/>
+        <text class="fx-label" x="60" y="52">5</text>
+        <text class="fx-label" x="46" y="38">10</text>
+        <text class="fx-label" x="30" y="24">5</text>
+      </symbol>
+      <symbol id="ex-etirements" viewBox="0 0 100 100">
+        <line class="fx-ground" x1="6" y1="90" x2="96" y2="90"/>
+        <path class="fx-body" d="M30 90 L38 76 L46 62"/>
+        <path class="fx-body" d="M46 62 L62 90"/>
+        <path class="fx-body" d="M46 62 V44"/>
+        <path class="fx-body" d="M46 48 L28 44 M46 48 L70 30"/>
+        <circle class="fx-head" cx="46" cy="37" r="6"/>
+        <path class="fx-arrow" d="M74 22 L82 14 M78 14 H82 V18"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <div class="app" id="app">
     <!-- Screens injected here -->
   </div>
@@ -697,7 +1118,8 @@
             duration: 30,
             perSide: false,
             rest: 30,
-            image: "images/adducteurs-01.jpg"
+            image: "images/adducteurs-01.jpg",
+            icon: "ex-copenhagen-plank"
           },
           {
             name: "Fente latérale",
@@ -808,12 +1230,70 @@
       }
     };
 
+    // Séances futsal — dispos tous les jours, en plus de la mobilité.
+    const futsal = {
+      A: {
+        name: "Futsal A — Force",
+        short: "A — Force",
+        estimatedMin: 43,
+        exercises: [
+          { name: "Échauffement", description: "Marche, montées de genoux, rotations de hanches.", sets: 1, duration: 180, perSide: false, rest: 0 },
+          { name: "Fente bulgare (kettlebell)", description: "KB dans la main opposée à la jambe avant. 3 s de descente contrôlée.", sets: 4, duration: 40, perSide: true, rest: 60, icon: "ex-fente-bulgare" },
+          { name: "Soulevé de terre unilatéral", description: "KB dans la main opposée à la jambe d'appui. Dos droit, hanche qui recule.", sets: 3, duration: 40, perSide: true, rest: 45, icon: "ex-souleve-de-terre-unilateral" },
+          { name: "Isométrie mollet, une jambe", description: "Sur la pointe d'un pied. Talon haut, on ne bouge plus.", sets: 4, duration: 30, perSide: true, rest: 30, icon: "ex-isometrie-mollet-une-jambe" },
+          { name: "Copenhagen plank", description: "Sur le côté, avant-bras au sol, cheville du dessus sur un banc, bassin décollé. Passe sur le genou si trop dur.", sets: 3, duration: 20, perSide: true, rest: 30, icon: "ex-copenhagen-plank" },
+          { name: "Leg curl au ballon", description: "Dos au sol, talons sur un ballon. Bassin haut, on tire le ballon vers les fesses.", sets: 3, duration: 40, perSide: false, rest: 60, icon: "ex-leg-curl-au-ballon" },
+          { name: "Suitcase carry", description: "KB dans une main, marche. Épaule qui ne descend pas du côté chargé.", sets: 3, duration: 30, perSide: true, rest: 30, icon: "ex-suitcase-carry" },
+          { name: "Pallof press", description: "Élastique ancré de côté à hauteur de sternum. Pousse devant, rien ne tourne dans le tronc.", sets: 3, duration: 30, perSide: true, rest: 30, icon: "ex-pallof-press" },
+          { name: "Étirements", description: "Étirements légers, respiration lente.", sets: 1, duration: 120, perSide: false, rest: 0, icon: "ex-etirements" }
+        ]
+      },
+      B1: {
+        name: "Futsal B1 — Appuis",
+        short: "B1 — Appuis",
+        estimatedMin: 27,
+        exercises: [
+          { name: "Échauffement", description: "Trot léger.", sets: 1, duration: 180, perSide: false, rest: 0 },
+          { name: "Genou au mur", description: "Debout face au mur, pied à quelques cm. Le genou vient toucher, le talon reste au sol.", sets: 2, duration: 30, perSide: true, rest: 0, icon: "ex-genou-au-mur" },
+          { name: "Marche latérale élastique", description: "Élastique au-dessus des chevilles. Un aller, un retour, hanche stable.", sets: 2, duration: 20, perSide: true, rest: 0, icon: "ex-marche-laterale-elastique" },
+          { name: "Réception amortie", description: "Petit saut vertical. Figer 2 s en bas, sans bruit.", sets: 3, duration: 20, perSide: false, rest: 60, icon: "ex-reception-amortie" },
+          { name: "Pogos", description: "Jambes tendues, contact au sol le plus court possible.", sets: 4, duration: 15, perSide: false, rest: 45, icon: "ex-pogos" },
+          { name: "Swing kettlebell (une main)", description: "KB projetée par les hanches, pas par les bras.", sets: 6, duration: 15, perSide: true, rest: 45, icon: "ex-swing-une-main" },
+          { name: "Accélération 15 m à 80 %", description: "Départ, 15 m d'accélération. Appuie sur Fait en arrivant.", sets: 6, manual: true, perSide: false, rest: 90, icon: "ex-acceleration-sprint" },
+          { name: "Récupération", description: "Marche.", sets: 1, duration: 180, perSide: false, rest: 0 }
+        ]
+      },
+      B2: {
+        name: "Futsal B2 — Changements de direction",
+        short: "B2 — Directions",
+        estimatedMin: 37,
+        exercises: [
+          { name: "Échauffement", description: "Trot + montées de genoux + talons-fesses.", sets: 1, duration: 240, perSide: false, rest: 0 },
+          { name: "Genou au mur", description: "Debout face au mur. Genou touche, talon reste au sol.", sets: 2, duration: 30, perSide: true, rest: 0, icon: "ex-genou-au-mur" },
+          { name: "Marche latérale élastique", description: "Élastique au-dessus des chevilles. Un aller, un retour.", sets: 2, duration: 20, perSide: true, rest: 0, icon: "ex-marche-laterale-elastique" },
+          { name: "Freinage 10 m", description: "10 m lancés, arrêt net, bassin en arrière. Fais côté 1, puis côté 2, puis repos.", sets: 8, manual: true, perSide: true, rest: 45, icon: "ex-freinage" },
+          { name: "5-10-5", description: "Touche le sol à chaque cône, repars sur la jambe extérieure. Appuie sur Fait à la fin.", sets: 6, manual: true, perSide: false, rest: 90, icon: "ex-5-10-5" },
+          { name: "Sprint 25 m", description: "À fond. Appuie sur Fait à l'arrivée.", sets: 4, manual: true, perSide: false, rest: 120, icon: "ex-acceleration-sprint" },
+          { name: "Récupération", description: "Marche.", sets: 1, duration: 180, perSide: false, rest: 0 }
+        ]
+      }
+    };
+
+    function getWorkout(key) {
+      if (!key) return null;
+      if (key === 'mobility') return routine[dowOf(state.date)] || null;
+      if (key.startsWith('futsal-')) return futsal[key.slice(7)] || null;
+      return null;
+    }
+
+    function workoutMin(w) {
+      if (!w) return 0;
+      if (w.estimatedMin) return w.estimatedMin;
+      return Math.round((w.exercises.reduce((n, e) => n + e.sets, 0) * 75) / 60);
+    }
+
     const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
     const dayShort = ['D', 'L', 'Ma', 'Me', 'J', 'V', 'S'];
-    const dayTargets = {
-      1: 'Hanche', 2: 'Ischios', 3: 'Quadris', 4: 'Adducteurs',
-      5: 'Mollets', 6: 'Genou', 0: 'Dos'
-    };
 
     // ============================================
     // STATE
@@ -826,6 +1306,7 @@
     let state = {
       screen: 'home',      // 'home' | 'exo' | 'rest' | 'done'
       date: todayIso(),
+      workoutKey: null,    // 'mobility' | 'futsal-A' | 'futsal-B1' | 'futsal-B2'
       exoIndex: 0,
       setIndex: 0,
       startTime: null,
@@ -834,6 +1315,7 @@
       restTimer: null,
       exoRemaining: 0,
       exoHalfDone: false,
+      manualHalfDone: false,
       exoTimer: null,
       audioCtx: null,
     };
@@ -878,6 +1360,9 @@
     // ============================================
     function goHome() {
       clearRest();
+      clearExoTimer();
+      state.workoutKey = null;
+      state.manualHalfDone = false;
       state.screen = 'home';
       render();
     }
@@ -886,12 +1371,14 @@
       return new Date(iso + 'T00:00:00').getDay();
     }
 
-    function startWorkout() {
+    function startWorkout(key) {
       initAudio();
-      const day = routine[dowOf(state.date)];
-      if (!day || !day.exercises.length) return;
+      const w = getWorkout(key);
+      if (!w || !w.exercises.length) return;
+      state.workoutKey = key;
       state.exoIndex = 0;
       state.setIndex = 0;
+      state.manualHalfDone = false;
       state.startTime = Date.now();
       state.screen = 'exo';
       render();
@@ -899,13 +1386,23 @@
 
     function completeSet() {
       initAudio();
-      const day = routine[dowOf(state.date)];
-      const exo = day.exercises[state.exoIndex];
+      const w = getWorkout(state.workoutKey);
+      const exo = w.exercises[state.exoIndex];
+
+      // Manuel perSide : un tap = un côté, deux taps = série finie.
+      if (exo.manual && exo.perSide && !state.manualHalfDone) {
+        state.manualHalfDone = true;
+        beep(880, 120, 0.15);
+        render();
+        return;
+      }
+      state.manualHalfDone = false;
+
       const isLastSet = state.setIndex >= exo.sets - 1;
-      const isLastExo = state.exoIndex >= day.exercises.length - 1;
+      const isLastExo = state.exoIndex >= w.exercises.length - 1;
 
       if (isLastSet && isLastExo) {
-        saveCompletion(state.date);
+        saveCompletion(state.date, state.workoutKey);
         state.screen = 'done';
         render();
         return;
@@ -983,15 +1480,22 @@
 
     function updateExoTimerUI() {
       const valEl = document.querySelector('.exo-count-value');
-      const sideEl = document.querySelector('.exo-side');
       if (valEl) valEl.textContent = state.exoRemaining;
-      if (sideEl) sideEl.textContent = `Côté ${state.exoHalfDone ? 2 : 1} / 2`;
+
+      const badgeEl = document.querySelector('.exo-side-big');
+      if (badgeEl) {
+        const right = state.exoHalfDone;
+        badgeEl.dataset.side = right ? 'right' : 'left';
+        badgeEl.querySelector('.exo-side-arrow').textContent = right ? '→' : '←';
+        badgeEl.querySelector('.exo-side-label').textContent = right ? 'DROITE' : 'GAUCHE';
+        badgeEl.querySelector('.exo-side-half').textContent = right ? '2/2' : '1/2';
+      }
     }
 
     function startExoTimer() {
       clearExoTimer();
-      const day = routine[dowOf(state.date)];
-      const exo = day && day.exercises[state.exoIndex];
+      const w = getWorkout(state.workoutKey);
+      const exo = w && w.exercises[state.exoIndex];
       if (!exo || !exo.duration) return;
       state.exoRemaining = exo.duration;
       state.exoHalfDone = false;
@@ -1017,8 +1521,8 @@
     }
 
     function advanceExercise() {
-      const day = routine[dowOf(state.date)];
-      const exo = day.exercises[state.exoIndex];
+      const w = getWorkout(state.workoutKey);
+      const exo = w.exercises[state.exoIndex];
       const isLastSet = state.setIndex >= exo.sets - 1;
 
       if (isLastSet) {
@@ -1027,6 +1531,7 @@
       } else {
         state.setIndex++;
       }
+      state.manualHalfDone = false;
       state.screen = 'exo';
       render();
     }
@@ -1062,14 +1567,31 @@
       catch (e) { return {}; }
     }
 
-    function saveCompletion(iso) {
+    // Migre l'ancien format (bool) vers { mobility: true }.
+    function completionsFor(iso) {
+      const raw = loadCompletions()[iso];
+      if (!raw) return {};
+      if (raw === true) return { mobility: true };
+      return raw;
+    }
+
+    function saveCompletion(iso, key) {
       const c = loadCompletions();
-      c[iso] = true;
+      const cur = c[iso] === true ? { mobility: true } : (c[iso] || {});
+      cur[key || 'mobility'] = true;
+      c[iso] = cur;
       localStorage.setItem('completions', JSON.stringify(c));
     }
 
     function isDoneOn(iso) {
-      return !!loadCompletions()[iso];
+      const raw = loadCompletions()[iso];
+      if (!raw) return false;
+      if (raw === true) return true;
+      return Object.keys(raw).length > 0;
+    }
+
+    function isWorkoutDoneOn(iso, key) {
+      return !!completionsFor(iso)[key];
     }
 
     function loadWeights() {
@@ -1119,7 +1641,6 @@
       const dow = dowOf(state.date);
       const day = routine[dow];
       const isToday = state.date === today;
-      const target = dayTargets[dow] || '—';
       const selected = new Date(state.date + 'T00:00:00');
       const dateStr = selected.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
       const weight = loadWeights()[state.date] ?? '';
@@ -1146,94 +1667,144 @@
         </div>
       `;
 
-      const header = `
-        <div class="home-header">
+      const dateLine = `
+        <div class="home-header home-header-compact">
           <div class="home-date">${isToday ? "Aujourd'hui" : dayNames[dow]} · ${dateStr}</div>
-          <div class="home-title">${day ? day.name : target}</div>
-          ${day ? `<div class="home-meta">${day.exercises.length} exercices · ~${Math.round((day.exercises.reduce((n,e)=>n+e.sets,0) * 75) / 60)} min</div>` : ''}
         </div>
       `;
 
-      if (!day) {
-        return `
-          <div class="screen">
-            ${weekStrip}
-            ${header}
-            ${weightRow}
-            <div class="empty">
-              <div class="empty-title">Pas encore configuré</div>
-              <div class="empty-text">Les exercices pour ce jour n'ont pas encore été ajoutés.</div>
-            </div>
+      const mobilityCard = day ? `
+        <button class="session-card session-card-primary ${isWorkoutDoneOn(state.date, 'mobility') ? 'done' : ''}"
+                onclick="startWorkout('mobility')">
+          <div class="session-card-head">
+            <div class="session-eyebrow">Mobilité · ${dayNames[dow]}</div>
+            <div class="session-title">${day.name}</div>
+            <div class="session-meta">${day.exercises.length} exercices · ~${workoutMin(day)} min</div>
           </div>
+          <div class="session-cta">${isWorkoutDoneOn(state.date, 'mobility') ? 'Refaire' : 'Commencer'} →</div>
+        </button>
+      ` : `
+        <div class="session-card session-card-empty">
+          <div class="session-card-head">
+            <div class="session-eyebrow">Mobilité</div>
+            <div class="session-title">Pas configuré</div>
+            <div class="session-meta">Aucun exercice pour ce jour.</div>
+          </div>
+        </div>
+      `;
+
+      const futsalCards = Object.keys(futsal).map(id => {
+        const w = futsal[id];
+        const key = 'futsal-' + id;
+        const done = isWorkoutDoneOn(state.date, key);
+        return `
+          <button class="session-card ${done ? 'done' : ''}" onclick="startWorkout('${key}')">
+            <div class="session-card-head">
+              <div class="session-eyebrow">Futsal</div>
+              <div class="session-title">${w.short}</div>
+              <div class="session-meta">${w.exercises.length} blocs · ~${w.estimatedMin} min</div>
+            </div>
+            <div class="session-cta">${done ? 'Refaire' : 'Commencer'} →</div>
+          </button>
         `;
-      }
+      }).join('');
 
       return `
         <div class="screen">
           ${weekStrip}
-          ${header}
           ${weightRow}
+          ${dateLine}
 
-          <div class="exercises-preview">
-            ${day.exercises.map((e, i) => `
-              <div class="preview-item">
-                <div class="preview-num">${String(i+1).padStart(2, '0')}</div>
-                <div class="preview-name">${e.name}</div>
-                <div class="preview-vol">${e.sets}×${e.reps ?? e.duration + 's'}${e.perSide ? '·2' : ''}</div>
-              </div>
-            `).join('')}
+          <div class="sessions">
+            ${mobilityCard}
+            <div class="sessions-divider">Ou une séance futsal</div>
+            ${futsalCards}
           </div>
-
-          <button class="btn-primary" onclick="startWorkout()">${isDoneOn(state.date) ? 'Refaire' : 'Commencer'}</button>
         </div>
       `;
     }
 
     function renderExo() {
-      const day = routine[dowOf(state.date)];
-      const exo = day.exercises[state.exoIndex];
-      const totalExos = day.exercises.length;
+      const w = getWorkout(state.workoutKey);
+      const exo = w.exercises[state.exoIndex];
+      const totalExos = w.exercises.length;
 
       const isTimed = !!exo.duration;
-      const countValue = exo.reps ?? exo.duration;
-      const countLabel = exo.reps
-        ? (exo.perSide ? 'reps chaque côté' : 'reps')
-        : 'secondes';
-      const sideIndicator = (isTimed && exo.perSide)
-        ? `<div class="exo-side">Côté 1 / 2</div>`
-        : '';
+      const isManual = !!exo.manual;
+
+      // Grand badge côté visible pour les exos chronométrés/manuels perSide.
+      // Côté 1 = GAUCHE, Côté 2 = DROITE (convention de l'entraînement).
+      const showSideBadge = exo.perSide && (isTimed || isManual);
+      const halfDone = isManual ? state.manualHalfDone : state.exoHalfDone;
+      const sideBadge = showSideBadge ? `
+        <div class="exo-side-big" data-side="${halfDone ? 'right' : 'left'}">
+          <span class="exo-side-arrow">${halfDone ? '→' : '←'}</span>
+          <span class="exo-side-label">${halfDone ? 'DROITE' : 'GAUCHE'}</span>
+          <span class="exo-side-half">${halfDone ? '2' : '1'}/2</span>
+        </div>
+      ` : '';
+
+      let countBlock;
+      if (isManual) {
+        countBlock = `
+          <div class="exo-count">
+            <div class="exo-count-value exo-count-manual">—</div>
+            <div class="exo-count-label">Appuie en arrivant</div>
+          </div>
+        `;
+      } else {
+        const countValue = exo.reps ?? exo.duration;
+        const countLabel = exo.reps
+          ? (exo.perSide ? 'reps chaque côté' : 'reps')
+          : 'secondes';
+        countBlock = `
+          <div class="exo-count">
+            <div class="exo-count-value">${countValue}</div>
+            <div class="exo-count-label">${countLabel}</div>
+          </div>
+        `;
+      }
+
+      const illustration = exo.icon
+        ? `<svg class="exo-svg" viewBox="0 0 100 100" role="img" aria-label="${exo.name}"><use href="#${exo.icon}"/></svg>`
+        : (exo.image
+            ? `<img src="${exo.image}" alt="${exo.name}" onerror="this.style.display='none'; this.parentElement.textContent='Image manquante'">`
+            : '<span>Image à venir</span>');
 
       return `
         <div class="screen">
           <div class="exo-header">
-            <div class="exo-progress">${String(state.exoIndex + 1).padStart(2, '0')} / ${String(totalExos).padStart(2, '0')}</div>
+            <div class="exo-progress">${String(state.exoIndex + 1).padStart(2, '0')} / ${String(totalExos).padStart(2, '0')} · ${w.short || w.name}</div>
             <button class="exo-close" onclick="goHome()">×</button>
           </div>
 
-          <div class="exo-image">
-            ${exo.image ? `<img src="${exo.image}" alt="${exo.name}" onerror="this.style.display='none'; this.parentElement.textContent='Image manquante'">` : '<span>Image à venir</span>'}
-          </div>
+          <div class="exo-image">${illustration}</div>
 
           <div class="exo-name">${exo.name}</div>
           <div class="exo-desc">${exo.description}</div>
 
-          <div class="exo-count">
-            <div class="exo-count-value">${countValue}</div>
-            <div class="exo-count-label">${countLabel}</div>
-            ${sideIndicator}
-          </div>
+          ${sideBadge}
+          ${countBlock}
 
-          <div class="exo-set">Série ${state.setIndex + 1} / ${exo.sets}</div>
+          <div class="exo-set">
+            <div class="exo-set-dots">
+              ${Array.from({ length: exo.sets }, (_, i) => {
+                const cls = i < state.setIndex ? 'done' : (i === state.setIndex ? 'current' : '');
+                return `<span class="exo-set-dot ${cls}"></span>`;
+              }).join('')}
+            </div>
+            <div class="exo-set-label">Série <span class="exo-set-current">${state.setIndex + 1}</span> / ${exo.sets}</div>
+          </div>
           <button class="btn-primary" onclick="completeSet()">Fait</button>
         </div>
       `;
     }
 
     function renderRest() {
-      const day = routine[dowOf(state.date)];
-      const exo = day.exercises[state.exoIndex];
+      const w = getWorkout(state.workoutKey);
+      const exo = w.exercises[state.exoIndex];
       const isLastSet = state.setIndex >= exo.sets - 1;
-      const nextExo = isLastSet ? day.exercises[state.exoIndex + 1] : exo;
+      const nextExo = isLastSet ? w.exercises[state.exoIndex + 1] : exo;
       const nextSet = isLastSet ? 1 : state.setIndex + 2;
 
       return `
@@ -1257,8 +1828,8 @@
     }
 
     function renderDone() {
-      const day = routine[dowOf(state.date)];
-      const totalSets = day.exercises.reduce((n, e) => n + e.sets, 0);
+      const w = getWorkout(state.workoutKey);
+      const totalSets = w.exercises.reduce((n, e) => n + e.sets, 0);
       const duration = Date.now() - state.startTime;
 
       return `
@@ -1267,8 +1838,8 @@
             <div class="done-check">✓</div>
             <div class="done-title">Terminé</div>
             <div class="done-stats">
-              ${day.exercises.length} exercices<br>
-              ${totalSets} séries<br>
+              ${w.name}<br>
+              ${w.exercises.length} exercices · ${totalSets} séries<br>
               ${formatDuration(duration)}
             </div>
           </div>
